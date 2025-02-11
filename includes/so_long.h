@@ -129,4 +129,4 @@ void	move_left(t_map *game);
 void	move_right(t_map *game);
 void	check_win(t_map *game);
 
-# endif
+#endif
