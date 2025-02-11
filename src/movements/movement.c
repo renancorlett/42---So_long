@@ -18,7 +18,7 @@ void	check_win(t_map *game)
 	{
 		game->movement++;
 		ft_printf("Number of movements: %d\n", game->movement);
-		ft_printf("Descansar né, que ninguém é de ferro!\n");
+		ft_printf("Let's take a brake!\n");
 		ft_free_all(game);
 		exit(1);
 	}
