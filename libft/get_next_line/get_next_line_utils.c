@@ -6,13 +6,13 @@
 /*   By: rcorlett <rcorlett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 09:12:12 by rcorlett          #+#    #+#             */
-/*   Updated: 2025/02/11 16:08:51 by rcorlett         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:34:26 by rcorlett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen_gnl(const char *str)
+size_t	strlen_gnl(const char *str)
 {
 	size_t	len;
 
@@ -35,7 +35,7 @@ char	*ft_strchr_gnl(const char *s, int c)
 	return ((char *)s);
 }
 
-void	*ft_calloc_gnl(size_t nmemb, size_t size)
+void	*calloc_gnl(size_t nmemb, size_t size)
 {
 	unsigned char	*ptr;
 	size_t			total_size;
@@ -65,14 +65,14 @@ char	*ft_strjoin_gnl(char *stash, char *buffer)
 	if (!stash && !buffer)
 		return (NULL);
 	if (!stash)
-		stash = (char *)ft_calloc_gnl(1, sizeof(char));
+		stash = (char *)calloc_gnl(1, sizeof(char));
 	original_stash = stash;
-	if (ft_strlen_gnl(stash) + ft_strlen_gnl(buffer) == 0)
+	if (strlen_gnl(stash) + strlen_gnl(buffer) == 0)
 	{
 		free(stash);
 		return (NULL);
 	}
-	str = ft_calloc_gnl(ft_strlen_gnl(stash) + ft_strlen_gnl(buffer) + 1, sizeof(char));
+	str = calloc_gnl(strlen_gnl(stash) + strlen_gnl(buffer) + 1, sizeof(char));
 	if (!str)
 		return (NULL);
 	i = 0;

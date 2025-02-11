@@ -25,8 +25,8 @@ char	*read_file(int fd, char *stash);
 char	*extract_line(char *stash);
 char	*update_stash(char *stash);
 char	*ft_strjoin_gnl(char *s1, char *s2);
-size_t	ft_strlen_gnl(const char *str);
+size_t	strlen_gnl(const char *str);
 char	*ft_strchr_gnl(const char *s, int c);
-void	*ft_calloc_gnl(size_t nmemb, size_t size);
+void	*calloc_gnl(size_t nmemb, size_t size);
 
 #endif

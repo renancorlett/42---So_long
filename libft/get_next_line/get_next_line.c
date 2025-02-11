@@ -92,7 +92,7 @@ char	*update_stash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	new_stash = malloc((ft_strlen_gnl(stash) - i + 1) * sizeof(char));
+	new_stash = malloc((strlen_gnl(stash) - i + 1) * sizeof(char));
 	if (!new_stash)
 		return (NULL);
 	i++;

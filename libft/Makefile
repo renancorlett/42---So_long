@@ -25,7 +25,8 @@ SRCS = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isascii.c ft_isdigit.c \
 	ft_tolower.c ft_toupper.c ft_strchr.c ft_isalpha.c ft_strcmp.c\
 	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstadd_back.c \
 	ft_lstlast.c ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c \
-	ft_printf/ft_printf_usual.c ft_printf/ft_printf.c ft_printf/ft_hex_pointers_usual.c \
+	ft_printf/ft_printf_usual.c ft_printf/ft_printf.c \
+	ft_printf/ft_hex_pointers_usual.c \
 	get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 	
 	
