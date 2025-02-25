@@ -1,0 +1,116 @@
+Resumo para So_long
+
+• HEADER:
+  ∘ Define as bibliotecas, estruturas e funções utilizadas para  funcionamento dos códigos.
+• MINILIBX:
+  ∘ Biblioteca gráfica que fornece a interface grafica de janelas, manipulando imagens e interagindo com o sistema gráfico. Renderiza imagens, manipula eventos do teclado e mouse, formas geométricas, memória e fechamento jogo.
+• MAPS:
+  ∘ Extensão ".ber" é utilizada normalmente para indicar um mapa de jogo.
+  ∘ "0", "1", "P", "C" e "E" - Representam chão, parede, personagem, coletável e saída no mapa desenvolvido.
+• FUNÇÕES FREE.C:
+  ∘ Funções responsáveis por liberar memoria e destruir recursos do jogo alocado durante o jogo, bem como finalizar o jogo adequadamente.
+  ∘ free_array:
+    ‣ Libera um array de strings, se a primeira linha do duplicate for nula, significa que o array é vazio ou inválido. Libera o array e retorna.
+    ‣ Caso contrário, percorre todas as linhas do array liberando cada linha individualmente. Por fim, o array também é liberado.
+  ∘ free_map:
+    ‣ Game é um ponteiro para uma estrutura t_map que contém o mapa do jogo.
+    ‣ Verifica se a primeira linha é nula ou vazia, ou seja, mapa não carregado e libera apenas o array game->map.
+    ‣ Se o mapa abrir normalmente, vai correr linha por linha liberando memória. por fim o array também é liberado.
+  ∘ Destroy_images:
+    ‣ Libera as imagens carregadas na memória através da Minilibx.
+    ‣ Game é um ponteiro para estrutura t_map que contem as imagens do jogo.
+    ‣ Para cada imagem representa um void * e verifica se a imagem exite = é nula.
+    ‣ Se não for nula a função é chamada para destruir a imagem uma a uma, como o chao, saida, paredes e personagem principal.
+  ∘ Exit_game:
+    ‣ Game é um ponteiro para estrutura t_map que contem as imagens do jogo.
+    ‣ Liberta todos os recursos de memoria alocados durante o jogo e em seguida chama a função exit para encerrar.
+  • FUNÇÕES UTILS.C
+  ∘ Leitura e processamento do mapa, identificam a largura e comprimento das linhas e copiam o conteudo para o arquivo da estrutura.
+  ∘ Count_width:
+    ‣ Contar a largura de uma linha do mapa.
+  ∘ Count_lines:
+    ‣ FD é o file descriptor.
+    ‣ file é o parametro do nome do arquivo do mapa.
+    ‣ a função  abre o arquivo como leitura,se falhar chama o KILL que encerra o programa com uma mensagem de erro.
+    ‣ O get_next_line vai ler linha por linha e após ler todas as linhas é chamado o close que fecha e retorna o número de linhas.
+  ∘ copy_map:
+    ‣ Copiar o conteúdo do mapa para estrutura game->map.
+    ‣ t_map é onde será armazenada a estrutura.
+    ‣ lê-se linha a linha com o get_next_line e copia-se para estrura atraves do strdup criando uma nova string de conteúdo. Após copiar cada linha, armazena no temp e libera com o free(temp).
+    ‣ Após ler todas as linhas o ponteiro game->map[i] é definido como nulo para indicar o final do mapa.
+  ∘ read_map:
+    ‣ Ler o arquivo e armazena-lo na  estrutura t_map.
+    ‣ Usa o count_lines e armazena o valor em game->height, se o numero de linhas for igual a 0, chama o kill pra encerrar.
+    ‣ Abrir o arquivo como leitura, se houver erro, chama o kill para finalizar.
+    ‣ Armazena memoria utilizando o calloc, o que cria um array de ponteiros para uma string com game->height linhas e um ponteiro extra NULL no final.
+    ‣ Se a alocacao falhar, kill para encerrar.
+    ‣ Chama o copy_map para preencher a estrutura com as linhas lidas do arquivo. A largura do mapa é calculada com o count-width e armazenada em game->width e o arquivo é fechado com close.
+• MOVEMENTS:
+  ∘  Check_win:
+    ‣ verifica se o numero de coletaveis é igual a 0, se todos foram coletados, a contagem de movimentos (game->movement) é incrementada e o número de movimentos é impresso na tela. Mensagem final é exibida no momento de saída, libera toda memória do jogo, e é encerrado com exit.
+  ∘ validate_move_up_down and left_right:
+    ‣ Verifica se precionando as teclas de movimento "w,a,s, d" e "cima, esquerda, baixo, direita" o personagem se move, verifica se há parede para onde ele se moveu, se houver, bloqueia o movimento, se não tiver todos os coletáveis, bloqueia a saída.
+  ∘ Key_press:
+    ‣ Se teclar ESC o jogo é encerrado e libera-se toda memoria do jogo e exit para sair.
+    ‣ Se usadas as teclas de movimento, chama-se a validate para verificar se o movimento é válido.
+• MOVEMENTS1:
+  ∘ verifica se as futuras posições atraves do movimento, fazendo a substituição dos caracteres encontrados após cada movimento. Por exemplo: Se ele se move para cima e encontra um "C", o "C" passa a ser "P" que vai ser a atual posição do personagem, e a antiga posição do personagem fica como "0. O número de coletáveis neste caso é decrementado em game->collectables. Caso o movimento seja para a posição de saída "E" a função check_win é chamada para verificar as condições de vitória.
+• PARSING:
+  ∘ usa a função strcmp para comparar se os 4 ultimos caracteres são ".ber" para validar a extensão.
+• VALIDATION:
+  ∘ validate_boarders:
+    ‣ Verifica todas as céluas para todos os lados do mapa, se qualquer dessas células não for "1" usa o kill para encerrar o programa com uma mensagem de erro.
+  ∘ validate_size:
+    ‣ Verifica se as linhas tem a mesma largura, garante que o mapa tenha pelo menos 5 colunas e 3 linhas e uma soma, de largura e altura >= 8. Se alguma condição for violada, usa o kill para encerrar com a mensagem.
+  ∘ validate_assets:
+    ‣ valida se tem jogador e se tem saída.
+    ‣ a função percorre o mapa e verifica se existe apenas um jogador e uma saída, se houver menos ou mais ocorrencias desses assets, chama a função kill para finalizar com mensagem. Caso contátrio, armazena as coordenadas do "P" na variável zeca->pos.
+  ∘ validate_elements:
+    ‣ A função vai percorrer todo o mapa e se encontrar algo diferente de: "1", "0", "P", "C" ou "E" chama a funço kill para finalizar e exibe mensagem de encerramento.
+  ∘ validade_collectables:
+    ‣ Verifica se existe pelo menos um "C" ao percorrer o mapa, caso não encontre, finaliza com kill e mensagem.
+  ∘ flood_fill;
+    ‣ Explora as posições iniciais e adjacentes para saber se o jogador pode acessar todos itens e a saída, se encontrar um "C" aumenta o gathered e marca a célula como visitada "F", se encontrar parede ou célula visitada, retorna sem fazer nada, se encontrar a saída "E", chama a função exit_check e marca como "1", indicando que foi alcançada. Caso não passe pelo check, marca-se como "F"e continua a explorar.
+  ∘ validade_path:
+    ‣ verificar se os itens e saída estão acessiveis a partir da posição do jogador.
+    ‣ duplica o mapa através da duplicate para não modificar o mapa enquanto explora, chama o flood_fill para explorar a partir da posição do jogador.
+    ‣ Verifica se game-.gathered e gane->collectables são iguais em número. Se sim, verifica se o game->exit_check == 1.
+  ∘ validate_maps:
+    ‣ Chama todas as funções anteriores, se alguma falhar, o jogo nao abre.
+• RENDER:
+  ∘ create_sprites: (criação de um objeto gráfico bi ou tridimensional)
+    ‣ Cria sprites carregando as imagens de fundo.
+    ‣ Cada linha de codigo mlx-xpm_file carrega uma imagem XPM para a memória que retorna um ponteiro para imagem.
+    ‣ Cada imagem é armazenada em uma variável. dentro da estrutura game.
+  ∘ open_window:
+    ‣ Verifica se a biblioteca foi inicializada corretamente.
+    ‣ Cria uma janela com as dimensões especificadas atraves do game->width *SIZE e game->height *SIZE. 
+    ‣ Cria uma nova imagem game->image.img que será utilizada para renderizar o conteúdo do mapa.
+    ‣ mlx_get_data_addr obtém o endereço da imagem criada que permite modificar os pixels diretamente.
+  ∘ render_map:
+    ‣ A função percorre a matris game->map usando dois loops, um para linhas e outro para colunas, para cada célula chama a função render passando a posição (x,y) e o tipo de elemento que nela contém.
+  ∘ render_image:
+    ‣ chama a função mlx_putt_image_to_window para desenhar a imagem na janela.
+    ‣ Dependendo do valor da célula a função seleciona a imagem correspondente em (game->floor, game->wall, game->brahma, game->exit, game->zeca) e desenha na posição (x * SIZE, y *SIZE).
+  ∘ render;
+    ‣ Realiza a configuração inicial a chama as funções para todas as verificações.
+• INIT:
+  ∘ init_game;
+    ‣ ft-memset preenche todos os valores com zero, garantindo que todos os campos da estrutura t_map comecem com valores conhecidos (zero).
+  ∘ init:
+    ‣ Aloca e inicia a estrutura t_map para armazenar os dados do jogo e configurar a minilibX.
+    ‣ Caso a alocação falhe, usa KILL e finaliza, com mensagem e liberando os recursos alocados.
+    ‣ chama a init_game para inicializar todos os valores da estrutura.
+    ‣ inicializa a biblioteca e armazena o ponteiro mlx_ptr que seja usado para operações gráficas, como a criação da janela.
+    ‣ Retorna o ponteiro game, que é a estrutura pronta e inicializada para o jogo.
+• KILL:
+  ∘ Finaliza o programa quando apresenta erros e exibe uma mensagem para cada tipo de erro que foi obtido.
+• MAIN:
+  ∘ Verifica se há dois argumentos (nome do programa e executador).
+  ∘ Checa se a extensão é correta.
+  ∘ Se não conseguir abrir o arquivo, finaliza com KILL e mensagem de erro.
+  ∘ Inicia a estrutura do jogo.
+  ∘ Lê o conteúdo do arquivo do mapa e carrega a estrutura do jogo
+  ∘ Validações do mapa.
+  ∘ Exibe o mapa em tela.
+  ∘ retorna indicando que o programa rodou sem erros.
