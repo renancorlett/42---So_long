@@ -88,7 +88,7 @@ Resumo para So_long
     ‣ Cria uma nova imagem game->image.img que será utilizada para renderizar o conteúdo do mapa.
     ‣ mlx_get_data_addr obtém o endereço da imagem criada que permite modificar os pixels diretamente.
   ∘ render_map:
-    ‣ A função percorre a matris game->map usando dois loops, um para linhas e outro para colunas, para cada célula chama a função render passando a posição (x,y) e o tipo de elemento que nela contém.
+    ‣ A função percorre a matriz game->map usando dois loops, um para linhas e outro para colunas, para cada célula chama a função render passando a posição (x,y) e o tipo de elemento que nela contém.
   ∘ render_image:
     ‣ chama a função mlx_putt_image_to_window para desenhar a imagem na janela.
     ‣ Dependendo do valor da célula a função seleciona a imagem correspondente em (game->floor, game->wall, game->brahma, game->exit, game->zeca) e desenha na posição (x * SIZE, y *SIZE).
